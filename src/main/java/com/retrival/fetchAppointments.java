@@ -23,12 +23,13 @@ import com.google.gson.Gson;
 
 /**
  * Servlet implementation class fetchAppointments
+ * http://localhost:8080/project/fetchAppointments?doctor_id=2
  */
 @WebServlet("/fetchAppointments")
 public class fetchAppointments extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String url = "jdbc:mysql://localhost:3306/portal_db";
 		String user = "root";
@@ -95,9 +96,6 @@ public class fetchAppointments extends HttpServlet {
 			out.flush();
 			e.printStackTrace();
 		}
-		
-		
-		
 	}
 
 }

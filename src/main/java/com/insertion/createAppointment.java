@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.util.Enumeration;
 
 import org.json.JSONObject;
 
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet implementation class createAppointment
- * http://localhost:8080/project/createAppointment?doctor_id=2&patient_id=113&time=2021-09-15%2023:18:17&reason=cold
+ * http://localhost:8080/project/createAppointment?doctor_id=2&patient_id=1&time=2021-09-17%2023:18:17&reason=cough
  */
 
 
@@ -25,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 public class createAppointment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
       
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
 		String url = "jdbc:mysql://localhost:3306/portal_db";
@@ -44,6 +45,15 @@ public class createAppointment extends HttpServlet {
 			String patient_id = request.getParameter("patient_id");
 			String time = request.getParameter("time");
 			String reason = request.getParameter("reason");
+			
+//			Enumeration<String> parameterNames = request.getParameterNames();
+//			
+//			System.out.println(parameterNames.nextElement());
+			System.out.println(doctor_id);
+			System.out.println(patient_id);
+			System.out.println(time);
+			System.out.println(reason);
+			
 			
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection(url, user, dbPassword);
