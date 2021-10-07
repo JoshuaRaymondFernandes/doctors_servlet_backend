@@ -43,7 +43,7 @@ public class fetchCritical extends HttpServlet {
 		
 		String url = "jdbc:mysql://localhost:3306/portal_db";
 		String user = "root";
-		String dbPassword = "div1234@";
+		String dbPassword = "1joshua1";
 		
 		String query = "select * from checkup where `condition` = 'critical';";
 			
