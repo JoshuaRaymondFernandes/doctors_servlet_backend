@@ -1,15 +1,6 @@
 create database portal_db;
 use portal_db;
 
-
-CREATE TABLE `appointments` (
-		  `apt_id` int(10) unsigned AUTO_INCREMENT,
-		  `doctor_id` int(10) NOT NULL,
-		  `patient_id` int(10) NOT NULL,
-		  `time` DATETIME NOT NULL,
-		  `reason` varchar(255) DEFAULT NULL,
-		  PRIMARY KEY (`apt_id`)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		
 CREATE TABLE `patients` (
 		  `patient_id` int(10) unsigned AUTO_INCREMENT,
@@ -32,10 +23,41 @@ CREATE TABLE `doctors` (
 insert into doctors (`name`, `specialization`) values ("Joshua", "Cardiologist");
 insert into doctors (`name`, `specialization`) values ("Vikrant", "Radiologist");
 
+CREATE TABLE `appointments` (
+		  `apt_id` int(10) unsigned AUTO_INCREMENT,
+		  `doctor_id` int(10) NOT NULL,
+		  `patient_id` int(10) NOT NULL,
+		  `time` DATETIME NOT NULL,
+		  `reason` varchar(255) DEFAULT NULL,
+		  PRIMARY KEY (`apt_id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 		
 Insert into appointments (`doctor_id`, `patient_id`, `time`, `reason`) values ("1", "2", "2021-09-15 23:18:17", "Breathless");
 Insert into appointments (`doctor_id`, `patient_id`, `time`, `reason`) values ("2", "1", "2021-09-16 16:00:00", "Pain");
 Insert into appointments (`doctor_id`, `patient_id`, `time`, `reason`) values ("2", "3", "2021-09-16 18:00:00", "Fever");
+
+
+CREATE TABLE `checkup` (
+		`checkup_id` int(10) unsigned AUTO_INCREMENT,
+		`apt_id` int(10) unsigned NOT NULL,
+		  `patient_id` int(10) unsigned NOT NULL,
+		  `pname` varchar(25) DEFAULT NULL,
+		  `time` DATETIME NOT NULL,
+		  `diagnosis` varchar(100) DEFAULT NULL,
+		  `prescription` varchar(100) DEFAULT NULL,
+		  `condition` varchar(25) DEFAULT NULL,
+		  `amount` bigint(10) UNSIGNED NOT NULL,
+		  PRIMARY KEY (`checkup_id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `users` (
+   `user_id` int(10) unsigned AUTO_INCREMENT,
+   `uname` varchar(30) DEFAULT NULL,
+   `urole` varchar(20) NOT NULL,
+   `password` varchar(25) NOT NULL,
+   PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 /// For all appointments
@@ -65,14 +87,3 @@ left join patients p on a.patient_id = p.patient_id
 where
 d.doctor_id = 2;
 
-
-		
-patients table
-	patient id (auto)
-	patient name
-	patient number
-
-doctors table
-	- doc id (auto)
-	- doctor name
-	- doctor specialiaztion
