@@ -22,36 +22,45 @@ import org.json.JSONObject;
 import com.google.gson.Gson;
 
 /**
- * Servlet implementation class fetchCritical
+ * Servlet implementation class fetchIllnessCount
+ * http://localhost:8080/project/fetchIllnessCount
  */
-@WebServlet("/fetchCritical")
-public class fetchCritical extends HttpServlet {
+@WebServlet("/fetchIllnessCount")
+public class fetchIllnessCount extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public fetchCritical() {
+    public fetchIllnessCount() {
         super();
         // TODO Auto-generated constructor stub
     }
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	doPost(request, response);
-    }
-	
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doPost(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String url = "jdbc:mysql://localhost:3306/portal_db";
 		String user = "root";
 		String dbPassword = "1joshua1";
 		
-		String query = "select * from checkup where `condition` = 'critical';";
+		String query = "select diagnosis, count(*) as count from checkup group by diagnosis;";
 			
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
 		PrintWriter out = response.getWriter();
 		JSONObject json = new JSONObject();
-		List<Map<String, String>> list = new ArrayList<>();
+//		List<Map<String, String>> list = new ArrayList<>();
 		
 		System.out.println("Fetching Patients Appointments");
 
@@ -64,28 +73,27 @@ public class fetchCritical extends HttpServlet {
 
 			ResultSet rs = st.executeQuery();
 			
+			List<String> illnessNames = new ArrayList<String>();
+			List<Integer> illnessCount = new ArrayList<Integer>();
+			
 			// Extract data from result set
 			while (rs.next()) {
-				// Retrieve by column name
-				
-				Map<String,String> map = new HashMap<>();
-				map.put("patient_id", rs.getString("patient_id"));
-				map.put("pname", rs.getString("pname"));
-				map.put("time", rs.getString("time"));
-				map.put("diagnosis", rs.getString("diagnosis"));
-				map.put("prescription", rs.getString("prescription"));
-				map.put("condition", rs.getString("condition"));
-				map.put("amount", rs.getString("amount"));
+				// Retrieve by column naame
 
-				list.add(map);
+				illnessNames.add(rs.getString("diagnosis"));
+				illnessCount.add(rs.getInt("count"));
 			}
 
 			rs.close();
 			
-			String data = new Gson().toJson(list);
+			JSONObject result = new JSONObject();
+			result.put("illness", illnessNames);
+			result.put("count", illnessCount);
+			
+//			String data = new Gson().toJson(list);
 			
 			json.put("status", "successful");
-			json.put("data", data);
+			json.put("data", result);
 			
 			out.print(json);
 			out.flush();

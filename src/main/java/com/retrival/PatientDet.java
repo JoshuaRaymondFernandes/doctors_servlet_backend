@@ -22,44 +22,103 @@ import org.json.JSONObject;
 import com.google.gson.Gson;
 
 /**
- * Servlet implementation class fetchCritical
+ * Servlet implementation class PatientDet
+ * http://localhost:8080/project/PatientDet?pname=Shivram
  */
-@WebServlet("/fetchCritical")
-public class fetchCritical extends HttpServlet {
+@WebServlet("/PatientDet")
+public class PatientDet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public fetchCritical() {
+    public PatientDet() {
         super();
         // TODO Auto-generated constructor stub
     }
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	doPost(request, response);
-    }
-	
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doPost(request,response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		// TODO Auto-generated method stub
 		String url = "jdbc:mysql://localhost:3306/portal_db";
 		String user = "root";
 		String dbPassword = "1joshua1";
-		
-		String query = "select * from checkup where `condition` = 'critical';";
-			
+		String query = "select * from checkup where pname=? ";
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
 		PrintWriter out = response.getWriter();
 		JSONObject json = new JSONObject();
 		List<Map<String, String>> list = new ArrayList<>();
 		
-		System.out.println("Fetching Patients Appointments");
-
-		try {
-
+		System.out.println("Fetching ");
+//try {
+//			
+//	String pname = request.getParameter("pname");
+//			
+//			Class.forName("com.mysql.cj.jdbc.Driver");
+//			Connection con = DriverManager.getConnection(url, user, dbPassword);
+//			PreparedStatement st = con.prepareStatement(query);
+//			st.setString(1, pname);
+//
+//			ResultSet rs = st.executeQuery();
+//			
+//			// Extract data from result set
+//			while (rs.next()) {
+//				// Retrieve by column name
+//				
+//				Map<String,String> map = new HashMap<>();
+//				map.put("pname", rs.getString("pname"));
+//				map.put("diagnosis", rs.getString("diagnosis"));
+//				map.put("prescription", rs.getString("prescription"));
+//				map.put("condition", rs.getString("condition"));
+//				
+//				
+//
+//				list.add(map);
+//			}
+//
+//			rs.close();
+//			
+//			String data = new Gson().toJson(list);
+//			
+//			json.put("status", "successful");
+//			json.put("data", data);
+//			
+//			out.print(json);
+//			out.flush();
+//
+//		} catch (Exception e) {
+//			json.put("status", "failed");
+//			out.print(json);
+//			out.flush();
+//			e.printStackTrace();
+//		}
+//		
+//		
+//		
+//	}
+//
+//}
+		
+try {
+			
+			
+	String pname = request.getParameter("pname");
+	System.out.println(pname);
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection(url, user, dbPassword);
 			PreparedStatement st = con.prepareStatement(query);
+			st.setString(1, pname);
 			
 
 			ResultSet rs = st.executeQuery();
@@ -69,13 +128,12 @@ public class fetchCritical extends HttpServlet {
 				// Retrieve by column name
 				
 				Map<String,String> map = new HashMap<>();
-				map.put("patient_id", rs.getString("patient_id"));
 				map.put("pname", rs.getString("pname"));
-				map.put("time", rs.getString("time"));
 				map.put("diagnosis", rs.getString("diagnosis"));
-				map.put("prescription", rs.getString("prescription"));
+			    map.put("prescription", rs.getString("prescription"));
 				map.put("condition", rs.getString("condition"));
-				map.put("amount", rs.getString("amount"));
+				
+				
 
 				list.add(map);
 			}
@@ -96,6 +154,9 @@ public class fetchCritical extends HttpServlet {
 			out.flush();
 			e.printStackTrace();
 		}
+		
+		
+		
 	}
 
 }

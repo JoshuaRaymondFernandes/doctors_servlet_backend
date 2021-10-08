@@ -59,6 +59,21 @@ CREATE TABLE `users` (
    PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `medicine` (
+		  `med_id` int(10) unsigned AUTO_INCREMENT,
+		  `medname` varchar(30) DEFAULT NULL,
+		  `dosage` varchar(20) NOT NULL,
+		  PRIMARY KEY (`med_id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DELIMITER &&  
+CREATE PROCEDURE delete_patient (IN var1 INT)  
+BEGIN	
+	delete from patients where patient_id = var1;
+	delete from appointments where patient_id = var1;
+	delete from checkup where patient_id = var1;
+END &&  
+DELIMITER ;
 
 /// For all appointments
 
